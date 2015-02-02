@@ -6,8 +6,7 @@
     "hooks": {
         "chtest": {
             "apparmor": "chtest.apparmor",
-            "desktop":  "chtest.desktop",
-            "content-hub": "chtest.contenthub.json"
+            "desktop":  "chtest.desktop"
         }
     },
     "version": "0.1",

@@ -27,7 +27,7 @@ Project {
     }
     Files {
         directory: "."
-        paths: ["manifest.json",".excludes","chtest.contenthub.json"]
+        paths: ["manifest.json",".excludes"]
     }
     Files {
         directory: "www"

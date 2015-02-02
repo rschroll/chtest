@@ -92,15 +92,6 @@ MainView {
                         root.importItems(root.activeTransfer.items);
                 }
             }
-
-            Connections {
-                target: ContentHub
-                onImportRequested: {
-                    root.activeTransfer = transfer;
-                    if (root.activeTransfer.state === ContentTransfer.Charged)
-                        root.importItems(root.activeTransfer.items);
-                }
-            }
         }
 
         Page {
