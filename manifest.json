@@ -1,0 +1,18 @@
+{
+    "name": "chtest.rschroll",
+    "description": "description of chtest",
+    "architecture": "all",
+    "title": "chtest",
+    "hooks": {
+        "chtest": {
+            "apparmor": "chtest.apparmor",
+            "desktop":  "chtest.desktop",
+            "content-hub": "chtest.contenthub.json"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Robert Schroll <rschroll@gmail.com>",
+    "framework" : "ubuntu-sdk-14.10"
+}
+
+

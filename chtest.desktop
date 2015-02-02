@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=chtest
+Exec=qmlscene $@ main.qml
+Icon=chtest.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
