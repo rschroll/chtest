@@ -17,7 +17,7 @@ MainView {
 
         Page {
             id: root
-            title: i18n.tr("Import Content...")
+            title: i18n.tr("Imported Content")
             visible: false
 
             property var activeTransfer
@@ -25,31 +25,11 @@ MainView {
             Column {
                 anchors.fill: parent
                 spacing: units.gu(2)
-                Row {
-                    height: units.gu(6)
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        horizontalCenter: parent.horizontalCenter
-                    }
-                    spacing: units.gu(3)
-                    Button {
-                        text: i18n.tr("... From default provider")
-                        onClicked: {
-                            root.activeTransfer = peer.request();
-                        }
-                    }
-                    Button {
-                        text: i18n.tr("... From choosen provider")
-                        onClicked: {
-                            pageStack.push(picker);
-                        }
-                    }
-                }
 
                 Label {
                     id: label
                     width: parent.width
+                    text: "Push pictures to this app from any other"
                 }
 
                 Image {
@@ -68,57 +48,13 @@ MainView {
                 label.text = string;
             }
 
-            /* The ContentPeer sets the kinds of content that can be imported.  For some reason,
-               handler must be set to Source to indicate that the app is importing.  This seems
-               backwards to me. */
-            ContentPeer {
-                id: peer
-                contentType: ContentType.Pictures
-                handler: ContentHandler.Source
-                selectionType: ContentTransfer.Multiple
-            }
-
-            /* This is a GUI element that blocks the rest of the UI when a transfer is ongoing. */
-            ContentTransferHint {
-                anchors.fill: root
-                activeTransfer: root.activeTransfer
-            }
-
-            /* Watch root.activeTransfer to find out when content is ready for our use. */
-            Connections {
-                target: root.activeTransfer
-                onStateChanged: {
-                    if (root.activeTransfer.state === ContentTransfer.Charged)
-                        root.importItems(root.activeTransfer.items);
-                }
-            }
-
+            /* Listen to the ContentHub to find out if another apps wants us to import content. */
             Connections {
                 target: ContentHub
                 onImportRequested: {
                     root.activeTransfer = transfer;
                     if (root.activeTransfer.state === ContentTransfer.Charged)
                         root.importItems(root.activeTransfer.items);
-                }
-            }
-        }
-
-        Page {
-            id: picker
-            visible: false
-            /* This presents a grid of icons for apps that can give you content of the
-               specified type. */
-            ContentPeerPicker {
-                id: peerPicker
-                visible: parent.visible
-
-                handler: ContentHandler.Source  // Source to get content, for some reason
-                contentType: ContentType.Pictures
-
-                onPeerSelected: {
-                    peer.selectionType = ContentTransfer.Multiple;
-                    root.activeTransfer = peer.request();
-                    pageStack.pop();
                 }
             }
         }
