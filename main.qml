@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
 import Ubuntu.Components.Popups 0.1
-import Ubuntu.Content 0.1
+import Ubuntu.Content 1.0
 
 MainView {
     id: mainView
@@ -36,7 +36,7 @@ MainView {
                     Button {
                         text: i18n.tr("... From default provider")
                         onClicked: {
-                            root.activeTransfer = peer.request();
+                            root.activeTransfer = peer_.request(store);
                         }
                     }
                     Button {
@@ -72,7 +72,7 @@ MainView {
                handler must be set to Source to indicate that the app is importing.  This seems
                backwards to me. */
             ContentPeer {
-                id: peer
+                id: peer_
                 contentType: ContentType.Pictures
                 handler: ContentHandler.Source
                 selectionType: ContentTransfer.Multiple
@@ -82,6 +82,15 @@ MainView {
             ContentTransferHint {
                 anchors.fill: root
                 activeTransfer: root.activeTransfer
+            }
+
+            ContentStore {
+                id: store
+                scope: ContentScope.App
+                /* System -- file:///content/Pictures/image20150201_171832388.jpg
+                   User -- file:///home/phablet/Pictures/image20150201_171832388.jpg
+                   App -- Right place!
+                */
             }
 
             /* Watch root.activeTransfer to find out when content is ready for our use. */
@@ -108,7 +117,7 @@ MainView {
 
                 onPeerSelected: {
                     peer.selectionType = ContentTransfer.Multiple;
-                    root.activeTransfer = peer.request();
+                    root.activeTransfer = peer.request(store);
                     pageStack.pop();
                 }
             }
